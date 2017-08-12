@@ -1,0 +1,66 @@
+
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+
+
+public class RealSql {
+	
+	Statement stmt = null;
+	private static Connection conn;
+	public static Connection dbConnector() {
+		
+		 if(conn == null) {
+			    String url = "jdbc:mysql://localhost/";
+			    String dbName = "";
+			    String driver = "com.mysql.jdbc.Driver";
+			    String userName = "";
+			    String password = "";
+			    try {
+			        Class.forName(driver).newInstance();
+			        conn = DriverManager.getConnection(url + dbName, userName, password);
+			        System.out.println("Connected to " + dbName + " with " + userName);
+			        JOptionPane.showMessageDialog(null, conn == null);            
+			    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+			        e.printStackTrace();
+			    }
+			}
+			return conn;
+			}
+	
+	
+public void insertTable(){
+	// surround connection with try/catch to handle exceptions
+			try {
+				// call JDBC connection class
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				// instantiate connection variable and use deriver manager
+				Connection c = DriverManager.getConnection("jdbc:mysql://localhost/db", "","");
+				System.out.println("Opened Database successfully!!");
+
+				Statement stmt = c.createStatement();
+				String sql ="CREATE TABLE costumerTable ( " +
+				        "Id INTEGER NOT NULL, " +
+				       ........
+				        "PRIMARY KEY (Id))";
+				stmt.executeUpdate(sql);
+
+				stmt.close();
+				// close connection
+				c.close();
+			} catch (Exception ex) {
+				// error handlers
+				
+				System.err.println(ex.getClass().getName() + ": " + ex.getMessage());
+				System.exit(0);
+			}
+			System.out.println("Records Created successfully!!");
+
+		}
+	public static void main(String[] args) {
+		dbConnector();
+	//RealSql rs  = new RealSql();
+	//rs.insertTable();
+	}
+
+}
